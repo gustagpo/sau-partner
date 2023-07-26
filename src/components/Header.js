@@ -46,7 +46,7 @@ export default function Header() {
               <Link as={RouterLink} to='/' display="flex" algin="center">
                 <Text>Descontos</Text>
               </Link>
-              <Link href="https://saubeneficios.tenex.com.br/carteira-virtual/" target='blank' display="flex" algin="center">
+              <Link as={RouterLink} to='/clients' display="flex" algin="center">
                 <Text>Consultar Cliente</Text>
               </Link>
               <Flex alignItems="center">
