@@ -30,7 +30,7 @@ const userSchema = z.object({
     .string()
     .nonempty("CPF/CNPJ é um campo obrigatório.")
     .regex(
-      /(^\d{3}\.\d{3}\.\d{3}-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/,
+      /(^\d{3}\.\d{3}\.\d{3}-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$)/,
       "Favor informar um CPF/CNPJ válido."
     ),
   password: z.string().nonempty("Senha é um campo obrigatório."),

@@ -20,7 +20,6 @@ import { BsGraphUp } from "react-icons/bs";
 import { MdCheckCircle } from "react-icons/md";
 import { RiAddLine } from "react-icons/ri";
 import { Link as RouterLink } from "react-router-dom";
-import Pagination from "../components/Pagination";
 
 import { DiscountTable } from "../components/ui/DiscountTable";
 import { useAuth } from "../stores/use-auth";
