@@ -34,7 +34,9 @@ import { normalizeDocument } from "../util/normalize-document";
 const createDiscountSchema = z.object({
   customer_name: z.string().optional(),
   created_at: z.string().nonempty("Data de criação é um campo obrigatório."),
-  discount_amount: z.coerce.string(),
+  discount_amount: z.coerce.number({
+    invalid_type_error: "Valor do desconto é um campo obrigatório.",
+  }),
 });
 
 export default function Discounts() {
@@ -196,14 +198,16 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
-                  type="text"
+                  type="number"
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="Valor do Desconto"
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
-                  {...register("discount_amount")}
+                  {...register("discount_amount", {
+                    valueAsNumber: true,
+                  })}
                 />
               </InputGroup>
 
