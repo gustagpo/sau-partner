@@ -23,6 +23,7 @@ import { ClientPlans } from "../components/clientPlans";
 import { api } from "../lib/axios";
 import AuthLayout from "./_layouts/AuthLayout";
 import { useMutation } from "@tanstack/react-query";
+import { EmptyCustomerCheck } from "../components/EmptyCustomerCheck";
 
 const checkCustomerSchema = z.object({
   document: z.string().nonempty("CPF é um campo obrigatório."),

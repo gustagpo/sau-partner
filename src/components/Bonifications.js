@@ -19,6 +19,7 @@ import { BsCheck } from "react-icons/bs";
 import { AxiosError } from "axios";
 import { api } from "../lib/axios";
 import { formatDate } from "../util/format-date";
+import { EmptyCustomerCheck } from "./EmptyCustomerCheck";
 
 export function Bonifications({ bonificationChecks }) {
   const toast = useToast();
@@ -46,74 +47,82 @@ export function Bonifications({ bonificationChecks }) {
     }
   }
 
+  const isBonificationEmpty = bonificationChecks.some((item) => item === null);
+
   return (
-    <Box w="100%" p="8">
-      <Flex mb="8" justify="space-between" align="center">
-        <Heading size="lg" color="#004AAD" fontWeight="normal">
-          Bonificações Cadastradas no Plano
-        </Heading>
-      </Flex>
+    <>
+      {isBonificationEmpty ? (
+        <EmptyCustomerCheck />
+      ) : (
+        <Box w="100%" p="8">
+          <Flex mb="8" justify="space-between" align="center">
+            <Heading size="lg" color="#004AAD" fontWeight="normal">
+              Bonificações Cadastradas no Plano
+            </Heading>
+          </Flex>
 
-      <Table colorScheme="gray.200">
-        <Thead>
-          <Tr>
-            <Th>Id Cliente</Th>
-            <Th>Cliente / Dependente</Th>
-            <Th>Data</Th>
-            <Th>Ação</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {bonificationChecks.map(
-            ({ user_id, bonification_id, ...bonification }) => {
-              return (
-                <Tr key={bonification.id}>
-                  <Td>
-                    <Box>
-                      <Text textTransform="uppercase">
-                        #{bonification.id.substring(0, 7)}
-                      </Text>
-                    </Box>
-                  </Td>
-                  <Td>{bonification.user.name}</Td>
-                  <Td>{formatDate(bonification.createdAt)}</Td>
+          <Table colorScheme="gray.200">
+            <Thead>
+              <Tr>
+                <Th>Id Cliente</Th>
+                <Th>Cliente / Dependente</Th>
+                <Th>Data</Th>
+                <Th>Ação</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {bonificationChecks.map(
+                ({ user_id, bonification_id, ...bonification }) => {
+                  return (
+                    <Tr key={bonification.id}>
+                      <Td>
+                        <Box>
+                          <Text textTransform="uppercase">
+                            #{bonification.id.substring(0, 7)}
+                          </Text>
+                        </Box>
+                      </Td>
+                      <Td>{bonification.user.name}</Td>
+                      <Td>{formatDate(bonification.createdAt)}</Td>
 
-                  <Td>
-                    <HStack spacing="2">
-                      {bonification.status === null && (
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="green"
-                          leftIcon={<Icon as={BsCheck} />}
-                          onClick={() =>
-                            handleRedeemBonus(user_id, bonification_id)
-                          }
-                        >
-                          Confirmar
-                        </Button>
-                      )}
+                      <Td>
+                        <HStack spacing="2">
+                          {bonification.status === null && (
+                            <Button
+                              as="a"
+                              size="sm"
+                              fontSize="sm"
+                              colorScheme="green"
+                              leftIcon={<Icon as={BsCheck} />}
+                              onClick={() =>
+                                handleRedeemBonus(user_id, bonification_id)
+                              }
+                            >
+                              Confirmar
+                            </Button>
+                          )}
 
-                      {bonification.status !== null && (
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="green"
-                          leftIcon={<Icon as={BsCheck} />}
-                        >
-                          Registrado
-                        </Button>
-                      )}
-                    </HStack>
-                  </Td>
-                </Tr>
-              );
-            }
-          )}
-        </Tbody>
-      </Table>
-    </Box>
+                          {bonification.status !== null && (
+                            <Button
+                              as="a"
+                              size="sm"
+                              fontSize="sm"
+                              colorScheme="green"
+                              leftIcon={<Icon as={BsCheck} />}
+                            >
+                              Registrado
+                            </Button>
+                          )}
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  );
+                }
+              )}
+            </Tbody>
+          </Table>
+        </Box>
+      )}
+    </>
   );
 }
