@@ -55,7 +55,7 @@ export default function Home() {
   }
 
   function handleSearch() {
-    if (document.length == 14) {
+    if (document.length === 14) {
       const validCpf = cpf.isValid(document);
       if (!validCpf) {
         toast({

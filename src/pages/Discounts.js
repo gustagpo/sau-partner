@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
+import CurrencyInput from "react-currency-input-field";
 import { AiOutlineIdcard, AiOutlineLock } from "react-icons/ai";
 import { BsCalendarDate } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
@@ -28,15 +29,16 @@ import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { api } from "../lib/axios";
 import { useAuth } from "../stores/use-auth";
-import AuthLayout from "./_layouts/AuthLayout";
 import { normalizeDocument } from "../util/normalize-document";
+import AuthLayout from "./_layouts/AuthLayout";
+import InputMask from "react-input-mask";
 
 const createDiscountSchema = z.object({
   customer_name: z.string().optional(),
   created_at: z.string().nonempty("Data de criação é um campo obrigatório."),
-  discount_amount: z.coerce.number({
-    invalid_type_error: "Valor do desconto é um campo obrigatório.",
-  }),
+  discount_amount: z
+    .string()
+    .nonempty("Valor do desconto é um campo obrigatório."),
 });
 
 export default function Discounts() {
@@ -59,7 +61,7 @@ export default function Discounts() {
       await api.post("/discounts", {
         user_id: customerId,
         partner_id: user.id,
-        value: data.discount_amount,
+        value: data.discount_amount.replace(/\D/g, ""),
         date: data.created_at,
       });
 
@@ -123,14 +125,15 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
+                  as={InputMask}
+                  mask="999.999.999-99"
+                  maskChar={null}
                   type="text"
-                  maxLength={14}
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="CPF Cliente"
-                  value={normalizeDocument(customerDocument)}
                   onBlur={getCustomerData}
                   onChange={(event) => setCustomerDocument(event.target.value)}
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
@@ -198,16 +201,16 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
-                  type="number"
+                  as={CurrencyInput}
+                  decimalsLimit={2}
+                  prefix="R$ "
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="Valor do Desconto"
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
-                  {...register("discount_amount", {
-                    valueAsNumber: true,
-                  })}
+                  {...register("discount_amount")}
                 />
               </InputGroup>
 

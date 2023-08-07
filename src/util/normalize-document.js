@@ -1,5 +1,5 @@
 export function normalizeDocument(value) {
-  if (!value) return null;
+  if (!value) return "";
 
   const cleanedStringInput = value.replace(/\D/g, "");
 

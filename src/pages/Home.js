@@ -26,7 +26,12 @@ import { useAuth } from "../stores/use-auth";
 import AuthLayout from "./_layouts/AuthLayout";
 
 export default function Home() {
-  const user = useAuth((store) => store.user);
+  const { user } = useAuth((store) => {
+    return {
+      user: store.user,
+      rank: store.rank,
+    };
+  });
 
   return (
     <AuthLayout>
@@ -167,13 +172,29 @@ export default function Home() {
                 <Text fontSize="4xl" fontWeight="bold">
                   Ranking de Parceiros
                 </Text>
+
                 <HStack>
                   <Text fontSize="5xl" fontWeight="bold" color="#004AAD">
-                    14º
+                    2º
                   </Text>
+                  {/* {!rank ? (
+                    <Skeleton height={8} width={100} rounded={16} />
+                  ) : (
+                    <Text fontSize="5xl" fontWeight="bold" color="#004AAD">
+                      {rank.position || 2}º
+                    </Text>
+                  )} */}
+
                   <Text fontSize="4xl" fontWeight="bold" color="#004AAD">
-                    / 89
+                    / 2
                   </Text>
+                  {/* {!rank ? (
+                    <Skeleton height={8} width={120} rounded={16} />
+                  ) : (
+                    <Text fontSize="4xl" fontWeight="bold" color="#004AAD">
+                      / {rank.total || 2}
+                    </Text>
+                  )} */}
                 </HStack>
               </Flex>
             </Flex>

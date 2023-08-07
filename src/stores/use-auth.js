@@ -2,9 +2,11 @@ import { AxiosError } from "axios";
 import Cookies from "js-cookie";
 import { create } from "zustand";
 import { api } from "../lib/axios";
+import { toast } from "react-hot-toast";
 
 export const useAuth = create((set, get) => ({
   user: null,
+  rank: null,
   isLoadingUser: false,
   isAuthenticated: false,
 
@@ -29,7 +31,11 @@ export const useAuth = create((set, get) => ({
         password: data.password,
       });
 
-      const { token } = response.data;
+      const { token, rank } = response.data;
+
+      console.log(rank);
+
+      set({ rank });
 
       Cookies.set("@sau_benefits_token", token, { path: "/", expires: 7 });
 
@@ -41,7 +47,7 @@ export const useAuth = create((set, get) => ({
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
-          console.error(err.response.data);
+          toast.error("Usuário e/ou senha incorretos!");
         }
       }
     }
