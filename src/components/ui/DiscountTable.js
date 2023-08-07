@@ -17,14 +17,13 @@ import { EmptyDiscounts } from "../EmptyDiscounts";
 import dayjs from "dayjs";
 import { currency } from "../../util/currency";
 import { TableSkeleton } from "./TableSkeleton";
+import { formatDate } from "../../util/format-date";
 
 export function DiscountTable() {
   const discounts = useQuery(["discounts"], async () => {
     const response = await api.get("/discounts");
     return response.data;
   });
-
-  const formatDate = (date) => dayjs(date).format("DD/MM/YYYY");
 
   return (
     <>

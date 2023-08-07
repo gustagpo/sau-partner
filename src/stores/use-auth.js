@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 import { create } from "zustand";
 import { api } from "../lib/axios";
-import { toast } from "react-hot-toast";
 
 export const useAuth = create((set, get) => ({
   user: null,
@@ -31,11 +31,7 @@ export const useAuth = create((set, get) => ({
         password: data.password,
       });
 
-      const { token, rank } = response.data;
-
-      console.log(rank);
-
-      set({ rank });
+      const { token } = response.data;
 
       Cookies.set("@sau_benefits_token", token, { path: "/", expires: 7 });
 
