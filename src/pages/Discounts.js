@@ -15,26 +15,26 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+
 import { AiOutlineIdcard, AiOutlineLock } from "react-icons/ai";
 import { BsCalendarDate } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
-import AuthLayout from "./_layouts/AuthLayout";
 import { api } from "../lib/axios";
 import { useAuth } from "../stores/use-auth";
-import { AxiosError } from "axios";
-import { toast } from "react-hot-toast";
+import AuthLayout from "./_layouts/AuthLayout";
+import { normalizeDocument } from "../util/normalize-document";
 
 const createDiscountSchema = z.object({
   customer_name: z.string().optional(),
   created_at: z.string().nonempty("Data de criação é um campo obrigatório."),
-  discount_amount: z.coerce.number({
-    invalid_type_error: "Valor de desconto é um campo obrigatório.",
-  }),
+  discount_amount: z.coerce.string(),
 });
 
 export default function Discounts() {
@@ -78,7 +78,10 @@ export default function Discounts() {
   async function getCustomerData() {
     try {
       if (customerDocument.length === 14) {
-        const response = await api.get(`/users/${customerDocument}`);
+        const response = await api.get(
+          `/users/${normalizeDocument(customerDocument)}`
+        );
+
         setValue("customer_name", response.data.user.name);
         setCustomerId(response.data.user.id);
       }
@@ -125,7 +128,7 @@ export default function Discounts() {
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="CPF Cliente"
-                  value={customerDocument}
+                  value={normalizeDocument(customerDocument)}
                   onBlur={getCustomerData}
                   onChange={(event) => setCustomerDocument(event.target.value)}
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
@@ -193,14 +196,14 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
-                  type="number"
+                  type="text"
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="Valor do Desconto"
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
-                  {...register("discount_amount", { valueAsNumber: true })}
+                  {...register("discount_amount")}
                 />
               </InputGroup>
 
