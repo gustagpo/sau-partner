@@ -1,6 +1,22 @@
 import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 
 export function ClientPlans({ users }) {
+  const STATUS_PAYMENTS = {
+    1: "Pendente",
+    2: "Quitado",
+    3: "Recebimento parcial",
+    4: "Cancelado",
+    5: "Vencido",
+  };
+
+  const STATUS_PAYMENTS_COLORS = {
+    1: "red",
+    2: "blue",
+    3: "gray",
+    4: "black",
+    5: "yellow",
+  };
+
   return (
     <SimpleGrid w="100%" flex="1" my={8} gap="2" minChildWidth="350px">
       {users.map((plan) => {
@@ -26,8 +42,9 @@ export function ClientPlans({ users }) {
             <Text fontSize="4xl" fontWeight="bold">
               Status
             </Text>
-            <Text fontSize="xl" color="red">
-              Pendente de pagamento
+
+            <Text fontSize="xl" color={STATUS_PAYMENTS_COLORS[plan.status]}>
+              {STATUS_PAYMENTS[plan.status]}
             </Text>
           </Box>
         );

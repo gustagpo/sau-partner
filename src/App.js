@@ -10,14 +10,14 @@ import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
           <Index />
 
           <Toaster toastOptions={{ duration: 2000 }} />
-        </BrowserRouter>
-      </ChakraProvider>
-    </QueryClientProvider>
+        </ChakraProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 }

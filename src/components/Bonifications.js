@@ -77,9 +77,10 @@ export function Bonifications({ bonificationChecks }) {
                   </Td>
                   <Td>{bonification.user.name}</Td>
                   <Td>{formatDate(bonification.createdAt)}</Td>
+
                   <Td>
                     <HStack spacing="2">
-                      {bonification.status === false ? (
+                      {bonification.status === null && (
                         <Button
                           as="a"
                           size="sm"
@@ -92,12 +93,14 @@ export function Bonifications({ bonificationChecks }) {
                         >
                           Confirmar
                         </Button>
-                      ) : (
+                      )}
+
+                      {bonification.status !== null && (
                         <Button
                           as="a"
                           size="sm"
                           fontSize="sm"
-                          colorScheme="gray"
+                          colorScheme="green"
                           leftIcon={<Icon as={BsCheck} />}
                         >
                           Registrado
