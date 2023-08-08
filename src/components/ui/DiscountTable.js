@@ -29,7 +29,7 @@ export function DiscountTable() {
     <>
       {discounts.isLoading ? (
         <TableSkeleton />
-      ) : discounts.data.length === 0 ? (
+      ) : discounts.data.discount.length === 0 ? (
         <EmptyDiscounts />
       ) : (
         <Table colorScheme="gray.200">
@@ -44,7 +44,7 @@ export function DiscountTable() {
           </Thead>
 
           <Tbody>
-            {discounts.data.map((discount) => {
+            {discounts.data.discount.map((discount) => {
               return (
                 <Tr key={discount.id}>
                   <Td>
@@ -92,9 +92,8 @@ export function DiscountTable() {
                         disabled
                         fontSize="sm"
                         colorScheme="blue"
-                        leftIcon={<Icon as={MdCheckCircle} />}
                       >
-                        Aprovar
+                        Em aprovação
                       </Button>
                     )}
                   </Td>

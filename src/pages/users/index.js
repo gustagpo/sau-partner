@@ -15,8 +15,8 @@ export default function UserList() {
           <Flex align="center" mb="12">
             <Avatar
               size="xl"
-              name="Empresa Parceira"
-              src="https://avatars.githubusercontent.com/u/77734338"
+              name={user.name}
+              src=""
               mr="12"
             />
 

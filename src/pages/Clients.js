@@ -55,7 +55,7 @@ export default function Clients() {
           if (err.response.status === 400) {
             toast({
               title: "CPF Inválido.",
-              description: "O número do CPF inserido é inválido.",
+              description: err.response.data.error,
               status: "error",
               duration: 2500,
               isClosable: true,
@@ -140,7 +140,7 @@ export default function Clients() {
         {bonification ? <ClientPlans users={bonification.users} /> : null}
 
         {bonification ? (
-          <Bonifications bonificationChecks={bonification.bonificationChecks} />
+          <Bonifications id={bonification.bonification.id} users={bonification.users} bonificationChecks={bonification.bonificationChecks} />
         ) : null}
       </Flex>
     </AuthLayout>
