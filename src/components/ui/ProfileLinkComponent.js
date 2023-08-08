@@ -21,8 +21,8 @@ export function ProfileLinkComponent() {
         <Flex gap={2} mr="4" textAlign="right">
           <Avatar
             size="md"
-            name="Empresa Parceira"
-            src="https://avatars.githubusercontent.com/u/77734338"
+            name="SB"
+            src=""
           />
 
           <Button variant="link" onClick={signOut}>

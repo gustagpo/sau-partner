@@ -17,6 +17,7 @@ import { EmptyDiscounts } from "../EmptyDiscounts";
 import dayjs from "dayjs";
 import { currency } from "../../util/currency";
 import { TableSkeleton } from "./TableSkeleton";
+import { formatDate } from "../../util/format-date";
 
 export function DiscountTable() {
   const discounts = useQuery(["discounts"], async () => {
@@ -24,13 +25,11 @@ export function DiscountTable() {
     return response.data;
   });
 
-  const formatDate = (date) => dayjs(date).format("DD/MM/YYYY");
-
   return (
     <>
       {discounts.isLoading ? (
         <TableSkeleton />
-      ) : discounts.data.length === 0 ? (
+      ) : discounts.data.discount.length === 0 ? (
         <EmptyDiscounts />
       ) : (
         <Table colorScheme="gray.200">
@@ -45,7 +44,7 @@ export function DiscountTable() {
           </Thead>
 
           <Tbody>
-            {discounts.data.map((discount) => {
+            {discounts.data.discount.map((discount) => {
               return (
                 <Tr key={discount.id}>
                   <Td>
@@ -93,9 +92,8 @@ export function DiscountTable() {
                         disabled
                         fontSize="sm"
                         colorScheme="blue"
-                        leftIcon={<Icon as={MdCheckCircle} />}
                       >
-                        Aprovar
+                        Em aprovação
                       </Button>
                     )}
                   </Td>

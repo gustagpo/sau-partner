@@ -1,10 +1,12 @@
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-hot-toast";
 import { create } from "zustand";
 import { api } from "../lib/axios";
 
 export const useAuth = create((set, get) => ({
   user: null,
+  rank: null,
   isLoadingUser: false,
   isAuthenticated: false,
 
@@ -41,7 +43,7 @@ export const useAuth = create((set, get) => ({
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
-          console.error(err.response.data);
+          toast.error("Usuário e/ou senha incorretos!");
         }
       }
     }

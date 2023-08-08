@@ -11,47 +11,96 @@ import {
   InputLeftElement,
   Link,
   SimpleGrid,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+
+import CurrencyInput from "react-currency-input-field";
 import { AiOutlineIdcard, AiOutlineLock } from "react-icons/ai";
 import { BsCalendarDate } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
 import { Link as RouterLink } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
+import { api } from "../lib/axios";
+import { useAuth } from "../stores/use-auth";
+import { normalizeDocument } from "../util/normalize-document";
 import AuthLayout from "./_layouts/AuthLayout";
+import InputMask from "react-input-mask";
 
 const createDiscountSchema = z.object({
-  customer_name: z.string(),
-  created_at: z.string(),
-  discount_amount: z.number(),
+  customer_name: z.string().optional(),
+  created_at: z.string().nonempty("Data de criação é um campo obrigatório."),
+  discount_amount: z
+    .string()
+    .nonempty("Valor do desconto é um campo obrigatório."),
 });
 
 export default function Discounts() {
-  const [customerCpf, setCustomerCpf] = React.useState("");
+  const user = useAuth((store) => store.user);
+  const [customerId, setCustomerId] = React.useState("");
+  const [customerDocument, setCustomerDocument] = React.useState("");
 
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    setValue,
+    reset,
+    formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(createDiscountSchema),
   });
 
-  // const getCustomer = useQuery(
-  //   ["customerCpf", customerCpf],
-  //   async () => {
-  //     const response = await api.get(`/client/${customerCpf}`);
-  //     return response.data;
-  //   },
-  //   { enabled: customerCpf.length === 14 }
-  // );
-
   async function handleCreateNewDiscount(data) {
-    console.log(data);
+    try {
+      await api.post("/discounts", {
+        user_id: customerId,
+        partner_id: user.id,
+        value: data.discount_amount.replace(/\D/g, ""),
+        date: data.created_at,
+      });
+
+      toast.success("Desconto criado com sucesso!");
+
+      reset();
+      setCustomerDocument("");
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        toast.error("Erro ao criar desconto.");
+
+        setCustomerDocument("");
+        setValue("customer_name", "");
+      }
+    }
+  }
+
+  async function getCustomerData() {
+    try {
+      if (customerDocument.length === 14) {
+        const response = await api.get(
+          `/users/${normalizeDocument(customerDocument)}`
+        );
+
+        setValue("customer_name", response.data.user.name);
+        setCustomerId(response.data.user.id);
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response.status === 400) {
+          toast.error("Cliente não encontrado com este CPF.");
+
+          setCustomerDocument("");
+          setValue("customer_name", "");
+        }
+      }
+
+      console.error(err);
+    }
   }
 
   return (
@@ -76,15 +125,17 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
+                  as={InputMask}
+                  mask="999.999.999-99"
+                  maskChar={null}
                   type="text"
-                  maxLength={14}
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="CPF Cliente"
-                  value={customerCpf}
-                  onChange={(event) => setCustomerCpf(event.target.value)}
+                  onBlur={getCustomerData}
+                  onChange={(event) => setCustomerDocument(event.target.value)}
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
                 />
               </InputGroup>
@@ -129,6 +180,18 @@ export default function Discounts() {
                   {...register("created_at")}
                 />
               </InputGroup>
+
+              {errors.created_at && (
+                <Text
+                  pl={4}
+                  mt={1}
+                  fontSize="sm"
+                  color="#d10007"
+                  fontWeight="bold"
+                >
+                  {errors.created_at.message}
+                </Text>
+              )}
             </FormControl>
 
             <FormControl>
@@ -138,16 +201,30 @@ export default function Discounts() {
                 </InputLeftElement>
 
                 <Input
-                  type="number"
+                  as={CurrencyInput}
+                  decimalsLimit={2}
+                  prefix="R$ "
                   size="md"
                   color="black"
                   borderColor="#004AAD"
                   borderRadius={20}
                   placeholder="Valor do Desconto"
                   _placeholder={{ fontSize: "18", color: "#004AAD" }}
-                  {...register("discount_amount", { valueAsNumber: true })}
+                  {...register("discount_amount")}
                 />
               </InputGroup>
+
+              {errors.discount_amount && (
+                <Text
+                  pl={4}
+                  mt={1}
+                  fontSize="sm"
+                  color="#d10007"
+                  fontWeight="bold"
+                >
+                  {errors.discount_amount.message}
+                </Text>
+              )}
             </FormControl>
           </SimpleGrid>
         </VStack>
@@ -155,7 +232,9 @@ export default function Discounts() {
         <Flex mt="8" justify="flex-end">
           <HStack spacing="4">
             <Link as={RouterLink} to="/" display="flex" algin="center">
-              <Button colorScheme="blackAlpha">Cancelar</Button>
+              <Button type="button" colorScheme="blackAlpha">
+                Cancelar
+              </Button>
             </Link>
 
             <Button

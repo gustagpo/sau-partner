@@ -20,14 +20,25 @@ import { BsGraphUp } from "react-icons/bs";
 import { MdCheckCircle } from "react-icons/md";
 import { RiAddLine } from "react-icons/ri";
 import { Link as RouterLink } from "react-router-dom";
-import Pagination from "../components/Pagination";
-
+import { useQuery } from "@tanstack/react-query";
+import { api } from "../lib/axios";
+import { currency } from "../util/currency";
 import { DiscountTable } from "../components/ui/DiscountTable";
 import { useAuth } from "../stores/use-auth";
 import AuthLayout from "./_layouts/AuthLayout";
 
 export default function Home() {
-  const user = useAuth((store) => store.user);
+  const { user } = useAuth((store) => {
+    return {
+      user: store.user,
+      rank: store.rank,
+    };
+  });
+
+  const discounts = useQuery(["discounts"], async () => {
+    const response = await api.get("/discounts");
+    return response.data;
+  });
 
   return (
     <AuthLayout>
@@ -41,8 +52,8 @@ export default function Home() {
           <Flex align="center" mb="12">
             <Avatar
               size="xl"
-              name="Empresa Parceira"
-              src="https://avatars.githubusercontent.com/u/77734338"
+              name="SB"
+              src=""
               mr="12"
             />
 
@@ -129,19 +140,19 @@ export default function Home() {
                   <List spacing={3}>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos aprovados: R$ 690,00
+                      Descontos aprovados: {currency().format(discounts.data.approved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos em aprovação: R$ 15,00
+                      Descontos em aprovação: {currency().format(discounts.data.process)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos reprovados: R$ 140,00
+                      Descontos reprovados: {currency().format(discounts.data.reproved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Total de descontos: R$ 845,00
+                      Total de descontos: {currency().format(discounts.data.total)}
                     </ListItem>
                   </List>
                 </Flex>
@@ -168,13 +179,29 @@ export default function Home() {
                 <Text fontSize="4xl" fontWeight="bold">
                   Ranking de Parceiros
                 </Text>
+
                 <HStack>
                   <Text fontSize="5xl" fontWeight="bold" color="#004AAD">
-                    14º
+                    1º
                   </Text>
+                  {/* {!rank ? (
+                    <Skeleton height={8} width={100} rounded={16} />
+                  ) : (
+                    <Text fontSize="5xl" fontWeight="bold" color="#004AAD">
+                      {rank.position || 2}º
+                    </Text>
+                  )} */}
+
                   <Text fontSize="4xl" fontWeight="bold" color="#004AAD">
-                    / 89
+                    / 2
                   </Text>
+                  {/* {!rank ? (
+                    <Skeleton height={8} width={120} rounded={16} />
+                  ) : (
+                    <Text fontSize="4xl" fontWeight="bold" color="#004AAD">
+                      / {rank.total || 2}
+                    </Text>
+                  )} */}
                 </HStack>
               </Flex>
             </Flex>

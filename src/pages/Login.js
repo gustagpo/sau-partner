@@ -24,13 +24,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuth } from "../stores/use-auth";
 import DefaultLayout from "./_layouts/DefaultLayout";
+import { normalizeDocument } from "../util/normalize-document";
 
 const userSchema = z.object({
   document: z
     .string()
     .nonempty("CPF/CNPJ é um campo obrigatório.")
     .regex(
-      /(^\d{3}\.\d{3}\.\d{3}-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/,
+      /(^\d{3}\.\d{3}\.\d{3}-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$)/,
       "Favor informar um CPF/CNPJ válido."
     ),
   password: z.string().nonempty("Senha é um campo obrigatório."),
@@ -42,6 +43,8 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(userSchema),
@@ -50,6 +53,14 @@ export default function Login() {
   async function handleLogin(data) {
     await signIn(data);
   }
+
+  const document = watch("document");
+
+  React.useEffect(() => {
+    if (document) {
+      setValue("document", normalizeDocument(document));
+    }
+  }, [document, setValue]);
 
   return (
     <DefaultLayout>
@@ -82,6 +93,7 @@ export default function Login() {
                     borderColor="#004AAD"
                     borderRadius={20}
                     placeholder="CPF/CNPJ"
+                    maxLength={18}
                     _placeholder={{ fontSize: "18", color: "#004AAD" }}
                     {...register("document")}
                   />

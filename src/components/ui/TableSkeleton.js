@@ -1,14 +1,4 @@
-import {
-  Box,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Skeleton,
-  Button,
-} from "@chakra-ui/react";
+import { Skeleton, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 
 export function TableSkeleton() {
   return (
