@@ -76,7 +76,7 @@ export default function Login() {
             onSubmit={handleSubmit(handleLogin)}
           >
             <Heading size="xl" color="#004AAD" fontWeight="bold">
-              Entre na sua conta para cuidar da sua saúde e da sua família!
+              Venha ser parceiro da Saú e ajudar inumeras vidas e familias!
             </Heading>
 
             <VStack spacing="4" mt={8}>
@@ -159,7 +159,7 @@ export default function Login() {
                 Acessar
               </Button>
 
-              <Link as={RouterLink} to="/signin" display="flex" algin="center">
+              {/* <Link as={RouterLink} to="/signin" display="flex" algin="center">
                 <Button
                   bg="#5DE0E6"
                   color="#004AAD"
@@ -169,7 +169,7 @@ export default function Login() {
                 >
                   Criar Conta
                 </Button>
-              </Link>
+              </Link> */}
             </HStack>
           </Flex>
         </SimpleGrid>
