@@ -14,7 +14,7 @@ import {
   Skeleton,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { BsGraphUp } from "react-icons/bs";
 import { MdCheckCircle } from "react-icons/md";
@@ -28,6 +28,7 @@ import { useAuth } from "../stores/use-auth";
 import AuthLayout from "./_layouts/AuthLayout";
 
 export default function Home() {
+  const [discounts, setDiscounts] = useState('');
   const { user } = useAuth((store) => {
     return {
       user: store.user,
@@ -35,10 +36,20 @@ export default function Home() {
     };
   });
 
-  const discounts = useQuery(["discounts"], async () => {
-    const response = await api.get("/discounts");
-    return response.data;
-  });
+  async function loadData(){
+    try {
+      const response = await api.get('/discounts');
+      if(response.data){
+        setDiscounts(response.data);
+      }
+    }catch(err){
+      console.log(err.response.data);
+    }
+  }
+
+  useEffect(()=> {
+    loadData()
+   }, [])
 
   return (
     <AuthLayout>
@@ -140,19 +151,19 @@ export default function Home() {
                   <List spacing={3}>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos aprovados: {currency().format(discounts.data.approved)}
+                      Descontos aprovados: {currency().format(discounts.approved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos em aprovação: {currency().format(discounts.data.process)}
+                      Descontos em aprovação: {currency().format(discounts.process)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos reprovados: {currency().format(discounts.data.reproved)}
+                      Descontos reprovados: {currency().format(discounts.reproved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Total de descontos: {currency().format(discounts.data.total)}
+                      Total de descontos: {currency().format(discounts.total)}
                     </ListItem>
                   </List>
                 </Flex>

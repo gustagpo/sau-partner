@@ -81,8 +81,8 @@ export function Bonifications({ bonificationChecks, users, id }) {
                       </Td>
                       <Td>{user.name}</Td>
                       {bonificationChecks.map((b) => {
-                        return(
-                          b === null ?
+                        if( b == null ) {
+                          return(
                             <>
                               <Td> - </Td>
                               <Td>
@@ -99,26 +99,29 @@ export function Bonifications({ bonificationChecks, users, id }) {
                                 </Button>
                               </Td>
                             </>
-                          
-                          : 
-                            b.user_id == user.id ? 
-                              <>
-                              <Td>{formatDate(user.createdAt)}</Td>
-                              <Td>
-                                <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="gray"
-                                leftIcon={<Icon as={BsCheck} />}
-                                >
-                                  Registrado
-                                </Button>
-                              </Td>
-                              </>
-                            :
+                          )
+                        } else if( b && b.user_id == user.id ) {
+                          return(
+                            <>
+                            <Td>{formatDate(user.createdAt)}</Td>
+                            <Td>
+                              <Button
+                              as="a"
+                              size="sm"
+                              fontSize="sm"
+                              colorScheme="gray"
+                              leftIcon={<Icon as={BsCheck} />}
+                              >
+                                Registrado
+                              </Button>
+                            </Td>
+                            </>
+                          )
+                        } else {
+                          return(
                             <></>
-                        )
+                          )
+                        }
                       })}
                       <Td>
                         <HStack spacing="2">
