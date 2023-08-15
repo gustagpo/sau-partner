@@ -140,19 +140,19 @@ export default function Home() {
                   <List spacing={3}>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos aprovados: {currency().format(discounts.approved)}
+                      Descontos aprovados: {currency().format(discounts.data.approved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos em aprovação: {currency().format(discounts.process)}
+                      Descontos em aprovação: {currency().format(discounts.data.process)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Descontos reprovados: {currency().format(discounts.reproved)}
+                      Descontos reprovados: {currency().format(discounts.data.reproved)}
                     </ListItem>
                     <ListItem>
                       <ListIcon as={MdCheckCircle} color="#fff" />
-                      Total de descontos: {currency().format(discounts.total)}
+                      Total de descontos: {currency().format(discounts.data.total)}
                     </ListItem>
                   </List>
                 </Flex>
