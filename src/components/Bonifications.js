@@ -20,13 +20,12 @@ import { AxiosError } from "axios";
 import { api } from "../lib/axios";
 import { formatDate } from "../util/format-date";
 import { EmptyCustomerCheck } from "./EmptyCustomerCheck";
-import { useState } from "react";
 
 export function Bonifications({ bonificationChecks, users, bonification }) {
   const toast = useToast();
-  const [count, setCount] = useState(1);
 
   async function handleRedeemBonus(userId, bonificationId) {
+    window.location.reload(false);
     try {
       await api.post("/partners/bonification", {
         id: bonificationId,
@@ -54,10 +53,13 @@ export function Bonifications({ bonificationChecks, users, bonification }) {
     <>
       {bonification.id ? (
         <Box w="100%" p="8">
-          <Flex mb="8" justify="space-between" align="center">
+          <Flex mb="8" align="left" flexDirection="column">
             <Heading size="lg" color="#004AAD" fontWeight="normal">
               Bonificações Cadastradas no Plano
             </Heading>
+            <br/>
+            <Text fontSize="xl"><strong>Bonificação: </strong>{bonification.name}</Text>
+            <Text fontSize="xl"><strong>Descrição: </strong>{bonification.description}</Text>
           </Flex>
 
           <Table colorScheme="gray.200">
@@ -83,8 +85,24 @@ export function Bonifications({ bonificationChecks, users, bonification }) {
                       </Td>
                       <Td>{user.name}</Td>
                       {bonificationChecks.map((b) => {
-                        if( b == null && count == 1 ) {
-                          setCount = count + 1;
+                        if( b.user.id === user.id && b.status == true) {
+                          return(
+                            <>
+                              <Td>{formatDate(b.created_at)}</Td>
+                              <Td>
+                                <Button
+                                as="a"
+                                size="sm"
+                                fontSize="sm"
+                                colorScheme="gray"
+                                leftIcon={<Icon as={BsCheck} />}
+                                >
+                                  Registrado
+                                </Button>
+                              </Td>
+                            </>
+                          );
+                        } else if(b.user.id === user.id){
                           return(
                             <>
                               <Td> - </Td>
@@ -102,25 +120,7 @@ export function Bonifications({ bonificationChecks, users, bonification }) {
                                 </Button>
                               </Td>
                             </>
-                          )
-                        } else if( b && b.user_id == user.id ) {
-                          return(
-                            <>
-                            <Td>{formatDate(user.createdAt)}</Td>
-                            <Td>
-                              <Button
-                              as="a"
-                              size="sm"
-                              fontSize="sm"
-                              colorScheme="gray"
-                              leftIcon={<Icon as={BsCheck} />}
-                              >
-                                Registrado
-                              </Button>
-                            </Td>
-                            </>
-                          )
-                        } else {
+                          );
                         }
                       })}
                       <Td>

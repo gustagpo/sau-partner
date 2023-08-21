@@ -32,7 +32,7 @@ export function ClientPlans({ users }) {
             <Text fontSize="4xl" fontWeight="bold">
               {plan.name}
             </Text>
-            <Text fontSize="xl">{plan.user.name} - Titular</Text>
+            <Text fontSize="xl">{plan.user.name} - {plan.type === 1 ? 'Titular' : 'Dependente' }</Text>
             <br />
             <Text fontSize="4xl" fontWeight="bold">
               CPF
