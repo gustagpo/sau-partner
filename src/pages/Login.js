@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { AiOutlineIdcard, AiOutlineLock } from "react-icons/ai";
 import { Link as RouterLink } from "react-router-dom";
-import Card from "../assets/card.png";
+import Partner from "../assets/partner.png";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -66,7 +66,7 @@ export default function Login() {
     <DefaultLayout>
       <Flex maxWidth={1300} mb={50} w="100%" p="8" borderRadius={8}>
         <SimpleGrid minChildWidth="500px" spacing="8" w="100%">
-          <Image src={Card} />
+          <Image src={Partner} />
 
           <Flex
             as="form"
