@@ -20,9 +20,11 @@ import { AxiosError } from "axios";
 import { api } from "../lib/axios";
 import { formatDate } from "../util/format-date";
 import { EmptyCustomerCheck } from "./EmptyCustomerCheck";
+import { useState } from "react";
 
 export function Bonifications({ bonificationChecks, users, id }) {
   const toast = useToast();
+  const [count, setCount] = useState(1);
 
   async function handleRedeemBonus(userId, bonificationId) {
     try {
@@ -81,7 +83,8 @@ export function Bonifications({ bonificationChecks, users, id }) {
                       </Td>
                       <Td>{user.name}</Td>
                       {bonificationChecks.map((b) => {
-                        if( b == null ) {
+                        if( b == null && count == 1 ) {
+                          setCount = count + 1;
                           return(
                             <>
                               <Td> - </Td>
@@ -118,9 +121,6 @@ export function Bonifications({ bonificationChecks, users, id }) {
                             </>
                           )
                         } else {
-                          return(
-                            <></>
-                          )
                         }
                       })}
                       <Td>
