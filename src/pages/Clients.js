@@ -140,7 +140,7 @@ export default function Clients() {
         {bonification ? <ClientPlans users={bonification.users} /> : null}
 
         {bonification ? (
-          <Bonifications id={bonification.bonification.id} users={bonification.users} bonificationChecks={bonification.bonificationChecks} />
+          <Bonifications bonification={bonification.bonification} users={bonification.users} bonificationChecks={bonification.bonificationChecks} />
         ) : null}
       </Flex>
     </AuthLayout>

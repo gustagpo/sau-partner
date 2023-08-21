@@ -22,7 +22,7 @@ import { formatDate } from "../util/format-date";
 import { EmptyCustomerCheck } from "./EmptyCustomerCheck";
 import { useState } from "react";
 
-export function Bonifications({ bonificationChecks, users, id }) {
+export function Bonifications({ bonificationChecks, users, bonification }) {
   const toast = useToast();
   const [count, setCount] = useState(1);
 
@@ -52,7 +52,7 @@ export function Bonifications({ bonificationChecks, users, id }) {
 
   return (
     <>
-      {id ? (
+      {bonification.id ? (
         <Box w="100%" p="8">
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" color="#004AAD" fontWeight="normal">
@@ -95,7 +95,7 @@ export function Bonifications({ bonificationChecks, users, id }) {
                                   fontSize="sm"
                                   colorScheme="green"                                  
                                   onClick={() =>
-                                    handleRedeemBonus(user.id, id)
+                                    handleRedeemBonus(user.id, bonification.id)
                                   }
                                 >
                                   Confirmar
