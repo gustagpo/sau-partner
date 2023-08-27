@@ -3,7 +3,7 @@ import { Box, SimpleGrid, Text } from "@chakra-ui/react";
 export function ClientPlans({ users }) {
   const STATUS_PAYMENTS = {
     1: "Pendente",
-    2: "Quitado",
+    2: "Ativo",
     3: "Recebimento parcial",
     4: "Cancelado",
     5: "Vencido",

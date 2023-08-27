@@ -10,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineIdcard } from "react-icons/ai";
 import InputMask from "react-input-mask";
 
@@ -31,6 +31,7 @@ const checkCustomerSchema = z.object({
 
 export default function Clients() {
   const toast = useToast();
+  const [doc, setDoc] =  useState({});
 
   const {
     register,
@@ -47,6 +48,7 @@ export default function Clients() {
   } = useMutation(
     async (document) => {
       const response = await api.get(`/client/${document}`);
+      setDoc(document);
       return response.data;
     },
     {
@@ -70,6 +72,25 @@ export default function Clients() {
   async function handleSearchCustomerPlans(data) {
     mutate(data.document);
   }
+
+  async function loadData(){
+    try{
+      const response = await api.get(`/client/${doc}`, {});
+      if(response.data){
+        bonification = response.data;
+      };
+    } catch(err) {
+      toast({
+        title: "Erro na atualização.",
+        description: "Recarregue a página para atualizar",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+      });
+    }
+    
+  } 
 
   return (
     <AuthLayout>
@@ -140,7 +161,7 @@ export default function Clients() {
         {bonification ? <ClientPlans users={bonification.users} /> : null}
 
         {bonification ? (
-          <Bonifications bonification={bonification.bonification} users={bonification.users} bonificationChecks={bonification.bonificationChecks} />
+          <Bonifications handleUpdate={loadData} bonification={bonification.bonification} users={bonification.users} bonificationChecks={bonification.bonificationChecks} />
         ) : null}
       </Flex>
     </AuthLayout>

@@ -16,36 +16,42 @@ import {
 } from "@chakra-ui/react";
 import { BsCheck } from "react-icons/bs";
 
-import { AxiosError } from "axios";
 import { api } from "../lib/axios";
 import { formatDate } from "../util/format-date";
 import { EmptyCustomerCheck } from "./EmptyCustomerCheck";
 
-export function Bonifications({ bonificationChecks, users, bonification }) {
+export function Bonifications({ handleUpdate, bonificationChecks, users, bonification }) {
   const toast = useToast();
 
   async function handleRedeemBonus(userId, bonificationId) {
-    window.location.reload(false);
     try {
-      await api.post("/partners/bonification", {
+      const response = await api.post("/partners/bonification", {
         id: bonificationId,
         user_id: userId,
         status: true,
       });
 
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response.status === 400) {
-          toast({
-            title: "Erro ao resgatar a bonificação.",
-            description: "Bonificação já resgatada.",
-            status: "error",
-            duration: 2500,
-            isClosable: true,
-            position: "top",
-          });
-        }
+      if(response.data){
+        toast({
+          title: "Bonificação resgatada com sucesso",
+          description: "O resgate da bonificação conecida ao cliente foi salvo",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        handleUpdate();
       }
+
+    } catch (err) {
+      toast({
+        title: "Erro ao resgatar a bonificação.",
+        description: err.response.data.error,
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+        position: "top",
+      });
     }
   }
 
