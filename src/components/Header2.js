@@ -47,9 +47,9 @@ export default function Header2() {
               <Link as={RouterLink} to='/plans' display="flex" algin="center">
                 <Text>Plano</Text>
               </Link>
-              <Link as={RouterLink} to='/exams' display="flex" algin="center">
+              {/* <Link as={RouterLink} to='/exams' display="flex" algin="center">
                 <Text>Resultado de Exames</Text>
-              </Link>
+              </Link> */}
               <Flex alignItems="center">
                 <Text>Siga a Saú</Text>
                 <Link href="https://www.instagram.com/saubeneficios/" target='blank' ml={2}>
@@ -95,9 +95,9 @@ export default function Header2() {
               <Link as={RouterLink} to='/plans' display="flex" algin="center">
                 <Text>Plano</Text>
               </Link>
-              <Link as={RouterLink} to='/exams' display="flex" algin="center">
+              {/* <Link as={RouterLink} to='/exams' display="flex" algin="center">
                 <Text>Resultado de Exames</Text>
-              </Link>
+              </Link> */}
               <Flex alignItems="center">
                 <Link href="https://www.instagram.com/saubeneficios/" target='blank' ml={2}>
                   <Flex bg="#004AAD" boxSize={10} borderRadius={50} alignItems="center" justifyContent="center">
