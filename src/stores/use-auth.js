@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 import { create } from "zustand";
 import { api } from "../lib/axios";
-import { useToast } from "@chakra-ui/react";
 
 export const useAuth = create((set, get) => ({
   user: null,
@@ -25,7 +24,6 @@ export const useAuth = create((set, get) => ({
 
   async signIn(data) {
     const { getUser } = get();
-    const toast = useToast();
 
     try {
       const response = await api.post("/partners/login", {
@@ -44,13 +42,7 @@ export const useAuth = create((set, get) => ({
       window.location.href = "/";
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast({
-          title: 'Erro ao fazer login.',
-          description: err.response.data.error,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        toast.error(err.response.data.error);
       }
     }
   },
