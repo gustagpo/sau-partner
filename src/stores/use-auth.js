@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 import { create } from "zustand";
 import { api } from "../lib/axios";
+import { useToast } from "@chakra-ui/react";
 
 export const useAuth = create((set, get) => ({
   user: null,
@@ -24,6 +25,7 @@ export const useAuth = create((set, get) => ({
 
   async signIn(data) {
     const { getUser } = get();
+    const toast = useToast();
 
     try {
       const response = await api.post("/partners/login", {
@@ -42,9 +44,16 @@ export const useAuth = create((set, get) => ({
       window.location.href = "/";
     } catch (err) {
       if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          toast.error("Usuário e/ou senha incorretos!");
-        }
+        toast({
+          title: 'Erro ao criar desconto.',
+          description: err.response.data.error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        // if (err.response?.status === 401) {
+        //   toast.error("Usuário e/ou senha incorretos!");
+        // }
       }
     }
   },
