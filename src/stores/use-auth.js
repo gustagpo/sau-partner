@@ -45,15 +45,12 @@ export const useAuth = create((set, get) => ({
     } catch (err) {
       if (err instanceof AxiosError) {
         toast({
-          title: 'Erro ao criar desconto.',
+          title: 'Erro ao fazer login.',
           description: err.response.data.error,
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
-        // if (err.response?.status === 401) {
-        //   toast.error("Usuário e/ou senha incorretos!");
-        // }
       }
     }
   },
