@@ -21,7 +21,7 @@ import CurrencyInput from "react-currency-input-field";
 import { AiOutlineIdcard, AiOutlineLock } from "react-icons/ai";
 import { BsCalendarDate } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
-import { Link as RouterLink } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
@@ -47,6 +47,7 @@ export default function Discounts() {
   const [customerId, setCustomerId] = React.useState("");
   const [customerDocument, setCustomerDocument] = React.useState("");
   const toast = useToast();
+  const navigation = useNavigate();
 
   const {
     register,
@@ -71,6 +72,7 @@ export default function Discounts() {
 
       reset();
       setCustomerDocument("");
+      navigation('/')
     } catch (err) {
       if (err instanceof AxiosError) {
         toast({
