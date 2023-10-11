@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   Text,
   VStack,
+  useToast
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -45,6 +46,7 @@ export default function Discounts() {
   const user = useAuth((store) => store.user);
   const [customerId, setCustomerId] = React.useState("");
   const [customerDocument, setCustomerDocument] = React.useState("");
+  const toast = useToast();
 
   const {
     register,
@@ -71,7 +73,13 @@ export default function Discounts() {
       setCustomerDocument("");
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast.error("Erro ao criar desconto.");
+        toast({
+          title: 'Erro ao criar desconto.',
+          description: err.response.data.error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
 
         setCustomerDocument("");
         setValue("customer_name", "");

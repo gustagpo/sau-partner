@@ -51,7 +51,7 @@ export default function Header() {
               borderRightWidth={1}
               borderColor="gray.500"
             >
-              <Link as={RouterLink} to="/" display="flex" algin="center">
+              <Link href="/#discount" display="flex" algin="center">
                 <Text>Descontos</Text>
               </Link>
               <Link as={RouterLink} to="/clients" display="flex" algin="center">

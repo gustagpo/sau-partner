@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { BiMoneyWithdraw } from "react-icons/bi";
+import { BiMoneyWithdraw, BiUser } from "react-icons/bi";
 import { BsGraphUp } from "react-icons/bs";
 import { MdCheckCircle } from "react-icons/md";
 import { RiAddLine } from "react-icons/ri";
@@ -58,7 +58,7 @@ export default function Home() {
           padding="100px 140px 70px"
           bg="#DBFBFD"
           borderRadius="150px 0 150px 0"
-          mb={24}
+          mb={20}
         >
           <Flex align="center" mb="12">
             <Avatar
@@ -84,7 +84,21 @@ export default function Home() {
           </Text>
         </Box>
 
-        <Text fontSize="4xl" fontWeight="bold">
+        <Flex w="100%" display="flex" flexDirection="column" mb={20} >
+          <Link as={RouterLink} to="/clients" display="flex" algin="center" justifyContent="center">
+            <Button
+              as="a"
+              size="lg"
+              fontSize="2xl"
+              colorScheme="blue"
+              leftIcon={<Icon as={BiUser} />}
+            >
+              Consultar cliente Saú
+            </Button>
+          </Link>
+        </Flex>
+
+        <Text fontSize="4xl" fontWeight="bold" id="discount">
           Veja como você está cuidando da saúde financeira dos seus clientes
         </Text>
 
